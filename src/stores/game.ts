@@ -4,7 +4,7 @@
 
 import { computed, onUnmounted, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Exercise, GameState } from '../types/game'
+import type { Exercise, ExerciseId, GameState } from '../types/game'
 
 const STORAGE_KEY = 'mr-fit:game-save'
 const AUTOSAVE_INTERVAL_MS = 10_000
@@ -115,6 +115,19 @@ export const useGameStore = defineStore('game', () => {
     scheduleSave()
   }
 
+  /**
+   * An exercise category's own button: performs a full "set" in one click,
+   * applying that exercise's minimum rep count instead of requiring that
+   * many individual clicks.
+   */
+  function performSet(id: ExerciseId): boolean {
+    const exercise = exercises.value.find((e) => e.id === id)
+    if (!exercise) return false
+    exercise.reps += exercise.repsPerSet
+    scheduleSave()
+    return true
+  }
+
   // ---- Init / autosave lifecycle ------------------------------------------
   loadFromStorage()
 
@@ -138,6 +151,7 @@ export const useGameStore = defineStore('game', () => {
     totalReps,
     // actions
     clickMain,
+    performSet,
     // persistence
     saveNow,
   }
