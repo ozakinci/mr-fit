@@ -34,3 +34,12 @@ Match these patterns rather than inventing new ones. If a new pattern is genuine
 - Touch the external tester project (`../mr-fit-tester`).
 
 Commit messages, when asked to commit, should be short and explain *why*, matching whatever style already exists in `git log`.
+
+## Test Code
+- Write unit tests for full coverage
+- Write functional / integration tests for logical coverage
+- What is intended in the commit should be covered with enough tests. 
+
+## Working with git
+- Always put the ticket id that you're solving in git comment
+- Always make micro commits. I mean one functionality is one commit.

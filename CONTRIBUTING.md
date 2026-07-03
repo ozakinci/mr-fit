@@ -26,6 +26,14 @@ See [`docs/technical/architecture.md`](docs/technical/architecture.md) for how t
 - Match existing folder conventions: stores in `src/stores/`, shared types in `src/types/`, presentational components in `src/components/`, utilities in `src/utils/`, composables in `src/composables/`.
 - Keep game-state mutations inside Pinia store actions, not scattered across components.
 
+## Commit conventions
+
+This repo enforces (via `git config core.hooksPath .githooks`, already set):
+
+- Every commit message must reference a ticket ID (`MRFIT-N` — see [`project/tickets.md`](project/tickets.md)). No ticket that fits? Open one, or use `git commit --no-verify` for a genuine exception.
+- Prefer small, single-functionality commits over large ones.
+- After each commit, an independent review (Opus) and draft external test coverage are generated automatically in the background — see [`AGENTS.md`](AGENTS.md#commit-conventions-enforced) for the mechanism and how to opt out per-commit or entirely.
+
 ## Proposing changes
 
 - Small fixes: open a PR directly.

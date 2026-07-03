@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-12**
+Next free ticket number: **MRFIT-14**
 
 ---
 
@@ -67,6 +67,14 @@ So external contributors get automatic feedback.
 ### MRFIT-11 — Decide public hosting
 GitHub Pages, Vercel, Netlify, or nothing yet. Affects whether player-facing docs point at a URL or just local dev instructions.
 **Status:** Open
+
+### MRFIT-13 — Add a unit/integration test framework
+main-dev's agent definition now requires unit tests (full coverage) and functional/integration tests on every commit, but no test runner is installed (`package.json` has none — no Vitest, no Jest). That requirement isn't actionable until a framework is chosen and wired up (config, `npm test` script, CI hook once MRFIT-10 exists). Flagged during the git-hooks work in MRFIT-12; needs a decision from the project owner or main-dev, not decided here.
+**Status:** Open
+
+### MRFIT-12 — Wire up git hooks for the updated agent workflow
+Enforce a ticket ID (`MRFIT-N`) in every commit message (`commit-msg`, blocking). Auto-trigger code-reviewer (opus) and tester (external Playwright coverage, left uncommitted for review) in the background after every commit (`post-commit`, non-blocking), per main-dev/code-reviewer/tester's updated "after each commit" instructions. See `AGENTS.md` for the mechanism, cost implications, and how to disable. Enabled via `git config core.hooksPath .githooks` in this repo, done with explicit sign-off (Claude Code's own permission layer flagged enabling a standing agent-spawning mechanism and required confirmation before proceeding).
+**Status:** Done
 
 ---
 

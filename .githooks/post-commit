@@ -1,23 +1,20 @@
 #!/usr/bin/env bash
-# Opt-in: NOT active by default. This repo's default git hooks path is the
-# normal .git/hooks, which does not run this file. Enable it with:
+# Enabled for this repo (core.hooksPath=.githooks — see AGENTS.md).
+# Disable entirely with: git config --unset core.hooksPath
 #
-#   git config core.hooksPath .githooks
+# After every commit, in the background, non-blocking, never fails or
+# undoes the commit (post-commit can't block anyway — the commit already
+# happened by the time this runs):
 #
-# Disable it again with:
+#   1. code-reviewer (opus) reviews the commit -> .review/<sha>.md
+#   2. tester drafts/updates external Playwright coverage for the commit's
+#      intent, in ../mr-fit-tester — left UNCOMMITTED there for human
+#      review; this hook never runs `git commit` in the tester repo.
 #
-#   git config --unset core.hooksPath
-#
-# What it does: runs the `code-reviewer` subagent (.claude/agents/code-reviewer.md,
-# Opus) against the commit that was just made, and writes its findings to
-# .review/<short-sha>.md. Runs in `post-commit`, so it never blocks or can
-# fail the commit itself — it only runs after the commit already succeeded.
-#
-# Before enabling: this calls the `claude` CLI non-interactively and costs
-# real API usage on every single commit, including WIP/fixup commits. Most
-# people are better served invoking the code-reviewer agent on demand
-# ("use the code-reviewer agent on the last commit") than auto-running it
-# on every commit. Only enable this if you specifically want that.
+# Both cost real API usage per commit. Skip either one for a single commit
+# with an env var, e.g.:
+#   MRFIT_SKIP_REVIEW_HOOK=1 git commit -m "..."
+#   MRFIT_SKIP_TESTER_HOOK=1 git commit -m "..."
 
 set -euo pipefail
 
@@ -28,13 +25,25 @@ fi
 SHA="$(git rev-parse --short HEAD)"
 OUT_DIR=".review"
 mkdir -p "$OUT_DIR"
-OUT_FILE="$OUT_DIR/$SHA.md"
 
-echo "code-reviewer (opus): reviewing commit $SHA in the background -> $OUT_FILE"
+# --- code-reviewer (opus): independent review of the commit ----------------
+if [ -z "${MRFIT_SKIP_REVIEW_HOOK:-}" ]; then
+  REVIEW_FILE="$OUT_DIR/$SHA.md"
+  echo "code-reviewer (opus): reviewing commit $SHA in the background -> $REVIEW_FILE"
+  nohup claude -p \
+    "Use the code-reviewer subagent to review commit $SHA (git show $SHA). It should also apply its 'Working with commits' checklist: cross-reference the ticket ID in the commit message against project/tickets.md to judge whether the diff matches that ticket's stated scope, flag any gold-plating/irrelevant changes, and check test coverage. Output only its findings." \
+    --agent code-reviewer \
+    > "$REVIEW_FILE" 2>&1 &
+  disown 2>/dev/null || true
+fi
 
-nohup claude -p \
-  "Use the code-reviewer subagent to review commit $SHA. Output only its findings." \
-  --agent code-reviewer \
-  > "$OUT_FILE" 2>&1 &
-
-disown 2>/dev/null || true
+# --- tester: draft external black-box coverage for the commit's intent -----
+if [ -z "${MRFIT_SKIP_TESTER_HOOK:-}" ]; then
+  TEST_LOG_FILE="$OUT_DIR/$SHA-tests.md"
+  echo "tester: drafting external test coverage for commit $SHA in the background -> ../mr-fit-tester (log: $TEST_LOG_FILE)"
+  nohup claude -p \
+    "A new commit ($SHA) just landed in the main Mr. Fit repo. Use the tester subagent: identify the commit's intent from its ticket ID (cross-referenced against project/tickets.md) and its commit message — not by reading the main repo's implementation, per your black-box rule. Then write or update Playwright tests in ../mr-fit-tester covering that intent. Do not run 'git commit' in the tester project; leave your changes uncommitted for human review. Summarize what you added or changed as your entire response." \
+    --agent tester \
+    > "$TEST_LOG_FILE" 2>&1 &
+  disown 2>/dev/null || true
+fi

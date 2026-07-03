@@ -34,6 +34,15 @@ Ask by name in conversation ("use the main-dev agent to implement X"), `@`-menti
 
 `D:\Code\Github\mr-fit-tester` is a sibling folder to this repo (not nested inside it), with its own `package.json` and Playwright suite. It exists so testing happens from a genuinely external vantage point — the way an outside QA process or a curious open-source contributor would poke at the running game, not the way its own author would. See that project's `README.md` for setup.
 
+## Commit conventions (enforced)
+
+Two git hooks are live in this repo (`git config core.hooksPath .githooks`; the scripts live in [`.githooks/`](.githooks/)):
+
+- **`commit-msg`** — blocks any commit whose message doesn't reference a ticket ID (`MRFIT-N`, see `project/tickets.md`). Mechanical, free, no agent involved. Bypass with `git commit --no-verify` for a genuine exception.
+- **`post-commit`** — after every commit, in the background, non-blocking: `code-reviewer` (opus) reviews the commit and writes findings to `.review/<sha>.md`; `tester` drafts/updates external Playwright coverage for the commit's intent in `../mr-fit-tester`, left **uncommitted** there for human review. Both cost real API usage per commit — skip either one for a single commit with `MRFIT_SKIP_REVIEW_HOOK=1` / `MRFIT_SKIP_TESTER_HOOK=1`, or disable both entirely with `git config --unset core.hooksPath`.
+
+main-dev's convention is small, single-functionality commits (`.claude/agents/main-dev.md` § Working with git) — expect many small ticket-tagged commits rather than a few large ones, and budget for the hook cost accordingly.
+
 ## Independent code review
 
-`code-reviewer` runs on Opus specifically so review isn't the same model rationalizing its own prior reasoning. It's invokable on demand ("use the code-reviewer agent on the last commit"). There's also an **opt-in, disabled-by-default** git hook at `.githooks/post-commit` that runs it automatically after every local commit — see that file's header comment for how to turn it on, and be aware it costs real API usage per commit before enabling it.
+`code-reviewer` runs on Opus specifically so review isn't the same model rationalizing its own prior reasoning. It runs automatically after every commit (see above) and is also invokable on demand ("use the code-reviewer agent on the last commit").

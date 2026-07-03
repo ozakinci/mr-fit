@@ -31,3 +31,9 @@ For each finding: `file:line`, one-sentence summary of the defect, a concrete fa
 - 🟣 **Pre-existing** — a bug that predates this diff, noted but not this change's fault
 
 Lead with a one-line tally ("2 Important, 1 Nit") and say "No blocking issues" when true. You cannot edit files — report findings only, and let main-dev apply fixes.
+
+## Working with commits
+- After each commit into the codebase check the intention of the commit and if there is extra code / gold plating / irrelevant items that are committed or not.
+- After each commit check if the intent is clear and in par with requirement
+- After each commit check if the code covers the intent.
+- After each commit check if enough test coverage code is written and covering the intent.

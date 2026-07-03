@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Enforced for this repo (core.hooksPath=.githooks — see AGENTS.md).
+#
+# Requires every commit message to reference a ticket ID (MRFIT-<number>,
+# see project/tickets.md), per main-dev's "Working with git" convention.
+# Blocks the commit if missing. Bypass with `git commit --no-verify` for a
+# genuine exception (there is no allowlist of prefixes — that's intentional,
+# keep this mechanical).
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="${2:-}"
+
+# Merges and squashes carry their own provenance; don't require a ticket ID on those.
+if [ "$COMMIT_SOURCE" = "merge" ] || [ "$COMMIT_SOURCE" = "squash" ]; then
+  exit 0
+fi
+
+if ! grep -qE 'MRFIT-[0-9]+' "$COMMIT_MSG_FILE"; then
+  echo "error: commit message must reference a ticket, e.g. MRFIT-12 (see project/tickets.md)" >&2
+  echo "       bypass with 'git commit --no-verify' if this genuinely has no ticket" >&2
+  exit 1
+fi
+
+exit 0

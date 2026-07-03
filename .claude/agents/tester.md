@@ -36,3 +36,7 @@ The game's dev server starts with `npm run dev` from `D:\Code\Github\mr-fit`, se
 Report pass/fail per scenario, plus screenshots for anything that failed or looks visually wrong. File bugs as concrete repro steps plus expected vs. actual, not vague "something feels off."
 
 You do not fix bugs yourself — that's main-dev's job. You find and clearly describe them.
+
+
+## Working with commits
+- After each commit write the external code to test the intent
