@@ -1,0 +1,20 @@
+# Agent Log
+
+Shared continuity log across all six agents (`.claude/agents/`). Every agent reads this at the start of its work to catch up on what's happened recently — across *all* agents, not just itself — and appends a short entry after every change it makes. This is how work stays coherent across a session restart or a context/token reset, where the conversation history is gone but this file isn't.
+
+**Format:** one `## YYYY-MM-DD` section per day, newest day at the top is *not* required — append the day's section wherever it falls chronologically; entries within a day are one line each: `- [agent-name] TICKET-ID (if any): short description of what changed and why.`
+
+**Retention:** keep only the most recent 3 days. When an agent appends an entry, if the log then spans more than 3 distinct day-sections, delete the oldest day's section entirely (not trimmed — gone). Older history lives in `git log` for this file if it's ever needed.
+
+---
+
+## 2026-07-03
+
+- [orchestrator] Scaffolded the initial Vue 3 + TypeScript + Vite + Pinia idle-clicker game via a multi-agent build workflow (scaffold, store, components, utils, styling, integration, verify phases); confirmed working end-to-end with a headless-browser smoke test.
+- [orchestrator] Set up the six-agent dev structure: `.claude/agents/` (project-manager, main-dev, tester, documenter, technical-documenter, code-reviewer), `project/`, `docs/`, `docs/technical/`, the external `../mr-fit-tester` black-box QA project, and `AGENTS.md`/`CLAUDE.md`/`CONTRIBUTING.md`. `git init` on both repos.
+- [project-manager] Pivoted requirements to v2 (bodyweight home-workout theme, replacing the generic-currency clicker); archived v1 verbatim; created the ticket system (`project/tickets.md`, MRFIT-1 through MRFIT-11) grouped into milestones M1–M3; retired the old unnumbered `backlog.md`.
+- [orchestrator] Updated README/docs for pivot-status consistency, cleaned up project files, made the first commits to both `mr-fit` and `mr-fit-tester` (local git identity had to be configured first — no global identity was set on this machine).
+- [orchestrator] Implemented `.githooks/commit-msg` (blocks commits without a `MRFIT-N` ticket ID — tested working) and `.githooks/post-commit` (triggers code-reviewer + tester in the background after every commit). Enabled via `core.hooksPath`, with explicit owner sign-off since Claude Code's permission layer flagged it as a standing agent-spawning mechanism. Flagged MRFIT-13: no unit-test framework is installed yet, so main-dev's new testing requirement isn't actionable until one is chosen. Committed as MRFIT-12.
+- [project-manager] Expanded to sole point of contact + orchestrator for the project owner (owns chasing tickets to real end-to-end completion, not just writing them), added a tone/personality directive, granted the `Agent` tool with owner sign-off. Committed as MRFIT-14 (two commits — the `Agent` grant needed separate sign-off).
+- [orchestrator] Discovered the `post-commit` hook is currently inert: no `claude` CLI binary is on PATH anywhere on this machine (checked Git Bash, PowerShell, npm globals, common install dirs) — the VSCode-extension-only setup has nothing for the hook to shell out to. Needs the CLI installed separately before auto-review/auto-test-drafting actually fire.
+- [orchestrator] MRFIT-15: added this file and the read-on-start/write-on-change/3-day-retention convention to all six agent definitions.

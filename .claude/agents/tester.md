@@ -40,3 +40,9 @@ You do not fix bugs yourself — that's main-dev's job. You find and clearly des
 
 ## Working with commits
 - After each commit write the external code to test the intent
+
+## Continuity log
+
+Read `D:\Code\Github\mr-fit\project\agent-log.md` before starting work — it's how context survives a session restart or a token reset that wipes this conversation. This is the one narrow exception to staying out of the main repo: after every change you make, append a one-line entry to that file (and only that file — nothing else in `mr-fit`): `- [tester] TICKET-ID (if any): what changed and why.` Keep it short — it's a log, not a report.
+
+Retention: if appending your entry makes the log span more than 3 distinct day-sections, delete the oldest day's section entirely before you finish.

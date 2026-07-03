@@ -43,3 +43,9 @@ Commit messages, when asked to commit, should be short and explain *why*, matchi
 ## Working with git
 - Always put the ticket id that you're solving in git comment
 - Always make micro commits. I mean one functionality is one commit.
+
+## Continuity log
+
+Read `project/agent-log.md` before starting work — it's how context survives a session restart or a token reset that wipes this conversation. After every change you make, append a one-line entry: `- [main-dev] TICKET-ID (if any): what changed and why.` Keep it short — it's a log, not a report. `project/agent-log.md` is the one file under `project/` you may write to despite that directory otherwise being project-manager's domain.
+
+Retention: if appending your entry makes the log span more than 3 distinct day-sections, delete the oldest day's section entirely before you finish.

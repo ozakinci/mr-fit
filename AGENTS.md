@@ -43,6 +43,12 @@ Two git hooks are live in this repo (`git config core.hooksPath .githooks`; the 
 
 main-dev's convention is small, single-functionality commits (`.claude/agents/main-dev.md` § Working with git) — expect many small ticket-tagged commits rather than a few large ones, and budget for the hook cost accordingly.
 
+**Known gap:** `post-commit` currently no-ops on a plain VSCode-extension setup — it shells out to a `claude` CLI binary, and none was found on this machine's PATH (checked Git Bash, PowerShell, npm globals). Install the CLI separately if you want the automated review/test-draft to actually fire; `commit-msg` doesn't need it and works regardless.
+
 ## Independent code review
 
-`code-reviewer` runs on Opus specifically so review isn't the same model rationalizing its own prior reasoning. It runs automatically after every commit (see above) and is also invokable on demand ("use the code-reviewer agent on the last commit").
+`code-reviewer` runs on Opus specifically so review isn't the same model rationalizing its own prior reasoning. It runs automatically after every commit (see above, gap notwithstanding) and is also invokable on demand ("use the code-reviewer agent on the last commit").
+
+## Continuity across sessions
+
+[`project/agent-log.md`](project/agent-log.md) is a shared, append-only log every agent reads at the start of its work and writes to after every change — the mechanism that keeps work coherent across a session restart or a context/token reset, which otherwise wipes the conversation but not this file. Retention is 3 days; whichever agent's entry pushes it past that prunes the oldest day. `code-reviewer` can't write it directly (read-only by design) — it appends a `LOG:` line to its report instead, for whoever invoked it to relay.

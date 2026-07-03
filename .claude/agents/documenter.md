@@ -26,3 +26,9 @@ Your reader is a player, not a developer. Never mention Vue, Pinia, TypeScript, 
 3. Keep it current. When main-dev ships a gameplay change, that's your cue to update the relevant doc.
 
 You do not write ADRs, architecture docs, or CONTRIBUTING.md — that's technical-documenter's job. You do not write code.
+
+## Continuity log
+
+Read `project/agent-log.md` before starting work — it's how context survives a session restart or a token reset that wipes this conversation. After every change you make, append a one-line entry: `- [documenter] TICKET-ID (if any): what changed and why.` Keep it short — it's a log, not a report. `project/agent-log.md` is the one file under `project/` you may write to despite that directory otherwise being project-manager's domain.
+
+Retention: if appending your entry makes the log span more than 3 distinct day-sections, delete the oldest day's section entirely before you finish.

@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-15**
+Next free ticket number: **MRFIT-16**
 
 ---
 
@@ -78,6 +78,10 @@ Enforce a ticket ID (`MRFIT-N`) in every commit message (`commit-msg`, blocking)
 
 ### MRFIT-14 — Make project-manager the owner's sole point of contact and orchestrator
 Expanded `.claude/agents/project-manager.md`: the project owner talks only to project-manager, never addresses main-dev/tester/documenter/technical-documenter/code-reviewer directly; project-manager is accountable for chasing tickets to real end-to-end completion (code + tests + docs + review), not just writing them down. Also added a tone/personality directive (blunt, funny, occasional mild cursing, pushes back on vague requests) per the project owner's request. Note: granting project-manager the `Agent` tool itself (needed for it to spawn other subagents autonomously) was blocked by Claude Code's permission layer as a self-authorized capability expansion — still needs explicit sign-off from the project owner, tracked as a follow-up rather than blocking this ticket.
+**Status:** Done
+
+### MRFIT-15 — Shared continuity log across all agents
+Added `project/agent-log.md`: every agent reads it at the start of work and appends a short entry after every change (3-day retention, oldest day pruned on append), so work stays coherent across a session restart or token reset. `code-reviewer` can't write it directly (read-only by design) — it appends a `LOG:` line to its report for the invoker to relay instead. `main-dev`/`documenter`/`technical-documenter`/`tester` each got a narrow, explicit exception to write *only* this one file outside their normal domain (`tester` especially, since it otherwise never touches the main repo).
 **Status:** Done
 
 ---

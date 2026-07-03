@@ -37,3 +37,7 @@ Lead with a one-line tally ("2 Important, 1 Nit") and say "No blocking issues" w
 - After each commit check if the intent is clear and in par with requirement
 - After each commit check if the code covers the intent.
 - After each commit check if enough test coverage code is written and covering the intent.
+
+## Continuity log
+
+Read `project/agent-log.md` before starting work — it's how context survives a session restart or a token reset that wipes this conversation. You cannot write it yourself (no Write/Edit — that's the whole point of this agent), so end every report with one extra line in this exact form: `LOG: [code-reviewer] TICKET-ID (if any): what you reviewed and the one-line verdict.` Whoever invoked you (project-manager, a git hook, or the user directly) is responsible for appending that line to `project/agent-log.md`, including the 3-day retention cleanup if it's now needed.
