@@ -1,6 +1,6 @@
 # Contributing to Mr. Fit
 
-Mr. Fit is a bodyweight home-workout idle game (Vue 3 + TypeScript + Vite + Pinia), currently mid-pivot from an earlier generic-currency clicker — see [`project/requirements.md`](project/requirements.md) for the version history and [`project/tickets.md`](project/tickets.md) for what's landed vs. pending. Contributions welcome.
+Mr. Fit is a bodyweight home-workout idle game (Vue 3 + TypeScript + Vite + Pinia). Its core loop was rewritten from an earlier generic-currency clicker to the current exercise/rep/muscle model in Milestone M1 — see [`project/requirements.md`](project/requirements.md) for the version history and [`project/tickets.md`](project/tickets.md) for what's landed vs. pending. Contributions welcome.
 
 ## Getting set up
 
