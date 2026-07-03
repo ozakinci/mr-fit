@@ -28,11 +28,18 @@ See [`docs/technical/architecture.md`](docs/technical/architecture.md) for how t
 
 ## Commit conventions
 
-This repo enforces (via `git config core.hooksPath .githooks`, already set):
+This repo's hooks live in [`.githooks/`](.githooks/) and are tracked in git, but `core.hooksPath` itself is a local git config setting — it does **not** travel with a clone. After cloning, run this once:
 
-- Every commit message must reference a ticket ID (`MRFIT-N` — see [`project/tickets.md`](project/tickets.md)). No ticket that fits? Open one, or use `git commit --no-verify` for a genuine exception.
-- Prefer small, single-functionality commits over large ones.
-- After each commit, an independent review (Opus) and draft external test coverage are generated automatically in the background — see [`AGENTS.md`](AGENTS.md#commit-conventions-enforced) for the mechanism and how to opt out per-commit or entirely.
+```
+git config core.hooksPath .githooks
+```
+
+That enables:
+
+- **`commit-msg`** (blocking, free, no agent involved) — every commit message must reference a ticket ID (`MRFIT-N` — see [`project/tickets.md`](project/tickets.md)). No ticket that fits? Open one, or use `git commit --no-verify` for a genuine exception.
+- **`post-commit`** (background, non-blocking) — an independent review (Opus) and draft external test coverage are generated automatically after each commit — see [`AGENTS.md`](AGENTS.md#commit-conventions-enforced) for the mechanism, its cost (real API usage per commit), and how to opt out per-commit or entirely. Requires the `claude` CLI on your `PATH`; a plain VSCode-extension install won't trigger it.
+
+Prefer small, single-functionality commits over large ones either way.
 
 ## Proposing changes
 
@@ -47,3 +54,7 @@ If you use [Claude Code](https://claude.com/claude-code), this repo defines six 
 ## Code of conduct
 
 Be respectful. Assume good faith. This is a hobby project — keep it fun.
+
+## License
+
+Mr. Fit is [MIT licensed](LICENSE). By contributing, you agree your contributions are licensed under the same terms.

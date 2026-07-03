@@ -19,3 +19,7 @@ Then open the URL Vite prints (`http://localhost:5173` by default).
 - [Architecture](docs/technical/architecture.md) and [decision records](docs/technical/adr/) — for contributors
 - [CONTRIBUTING.md](CONTRIBUTING.md) — how to get set up and propose changes
 - [AGENTS.md](AGENTS.md) — this repo's multi-agent Claude Code development workflow
+
+## License
+
+[MIT](LICENSE)

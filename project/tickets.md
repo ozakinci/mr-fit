@@ -65,8 +65,8 @@ Fatigue passively decreases during rest; once it drops below 20%, exercise actio
 Carried over unchanged from the pre-pivot backlog — not gameplay, still relevant regardless of game theme, not blocked on M1/M2.
 
 ### MRFIT-9 — Choose and add a LICENSE
-Blocked on a decision from the project owner (see `project/requirements.md`'s open questions in prior versions / project owner input). MIT is the common default for a small hobby game but it's their call.
-**Status:** Open
+Owner chose MIT (motivated by wanting future collaborators — MIT is permissive and low-friction to contribute under). Added `LICENSE` (root), `"license": "MIT"` in `package.json`, a License section in `README.md`, and a contribution-license note in `CONTRIBUTING.md`. Also fixed `CONTRIBUTING.md`'s hooks section while touching it — it claimed `core.hooksPath` was "already set," which is only true locally for the owner, not for a fresh clone; now documents the one-time `git config core.hooksPath .githooks` step a new collaborator needs to run.
+**Status:** Done
 
 ### MRFIT-10 — Add CI (typecheck + build on PRs)
 So external contributors get automatic feedback.
