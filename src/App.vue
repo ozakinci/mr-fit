@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import { useGameStore } from './stores/game'
-import { useGameLoop } from './composables/useGameLoop'
-import CurrencyDisplay from './components/CurrencyDisplay.vue'
-import ClickerButton from './components/ClickerButton.vue'
-import GeneratorsList from './components/GeneratorsList.vue'
-import UpgradesList from './components/UpgradesList.vue'
-
-const store = useGameStore()
-
-useGameLoop((deltaSeconds) => {
-  store.tick(deltaSeconds)
-})
+import MuscleDisplay from './components/MuscleDisplay.vue'
+import MainRepButton from './components/MainRepButton.vue'
+import ExercisesList from './components/ExercisesList.vue'
 </script>
 
 <template>
@@ -18,21 +9,18 @@ useGameLoop((deltaSeconds) => {
     <header class="app-header">
       <div class="container">
         <h1 class="app-title">Mr. Fit</h1>
-        <CurrencyDisplay />
+        <MuscleDisplay />
       </div>
     </header>
 
     <main class="container app-main">
       <section class="clicker-section">
-        <ClickerButton />
+        <MainRepButton />
       </section>
 
       <section class="panels">
         <div class="panel">
-          <GeneratorsList />
-        </div>
-        <div class="panel">
-          <UpgradesList />
+          <ExercisesList />
         </div>
       </section>
     </main>
@@ -72,12 +60,9 @@ useGameLoop((deltaSeconds) => {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-lg);
-}
-
-@media (min-width: 720px) {
-  .panels {
-    grid-template-columns: 1fr 1fr;
-  }
+  max-width: 480px;
+  margin-inline: auto;
+  width: 100%;
 }
 
 .panel {

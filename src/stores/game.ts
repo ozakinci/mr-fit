@@ -9,6 +9,8 @@ import type { Exercise, ExerciseId, GameState } from '../types/game'
 const STORAGE_KEY = 'mr-fit:game-save'
 const AUTOSAVE_INTERVAL_MS = 10_000
 const SAVE_DEBOUNCE_MS = 1_000
+/** Muscle earned per rep before fatigue efficiency is applied. */
+const BASE_MUSCLE_PER_REP = 1
 
 /**
  * Seed data for a fresh game: the four launch bodyweight categories.
@@ -32,6 +34,7 @@ function isSavedGame(value: unknown): value is SavedGame {
   if (typeof value !== 'object' || value === null) return false
   const v = value as Record<string, unknown>
   return (
+    typeof v.muscle === 'number' &&
     typeof v.totalClicks === 'number' &&
     Array.isArray(v.exercises) &&
     typeof v.lastSavedAt === 'number'
@@ -40,6 +43,8 @@ function isSavedGame(value: unknown): value is SavedGame {
 
 export const useGameStore = defineStore('game', () => {
   // ---- State -------------------------------------------------------------
+  /** Core resource built from completed reps. Replaces "currency" from v1. */
+  const muscle = ref(0)
   const totalClicks = ref(0)
   const exercises = ref<Exercise[]>(createInitialExercises())
   const lastSavedAt = ref(Date.now())
@@ -50,9 +55,22 @@ export const useGameStore = defineStore('game', () => {
     exercises.value.reduce((sum, exercise) => sum + exercise.reps, 0),
   )
 
+  /**
+   * Fraction of BASE_MUSCLE_PER_REP actually earned per rep. Hardcoded to 1
+   * for now — MRFIT-6 will replace this with a non-linear function of
+   * fatigue so grinding at high fatigue is clearly a bad trade. Reps/sets
+   * already call through musclePerRep, so that ticket only needs to touch
+   * this computed, not the action logic below.
+   */
+  const efficiency = computed(() => 1)
+
+  /** Muscle earned per rep right now, after fatigue efficiency. */
+  const musclePerRep = computed(() => BASE_MUSCLE_PER_REP * efficiency.value)
+
   // ---- Persistence -----------------------------------------------------
   function toSavedGame(): SavedGame {
     return {
+      muscle: muscle.value,
       totalClicks: totalClicks.value,
       exercises: exercises.value,
       lastSavedAt: Date.now(),
@@ -97,6 +115,7 @@ export const useGameStore = defineStore('game', () => {
       lastSavedAt.value = Date.now()
       return
     }
+    muscle.value = saved.muscle
     totalClicks.value = saved.totalClicks
     exercises.value = saved.exercises
     lastSavedAt.value = Date.now()
@@ -104,12 +123,14 @@ export const useGameStore = defineStore('game', () => {
 
   // ---- Actions -------------------------------------------------------------
   /**
-   * The main click button: logs 1 rep for every exercise category at once.
-   * There is no "selected" exercise — the button is universal.
+   * The main click button: logs 1 rep for every exercise category at once
+   * and banks the muscle earned for those reps. There is no "selected"
+   * exercise — the button is universal.
    */
   function clickMain(): void {
     for (const exercise of exercises.value) {
       exercise.reps += 1
+      muscle.value += musclePerRep.value
     }
     totalClicks.value += 1
     scheduleSave()
@@ -117,13 +138,14 @@ export const useGameStore = defineStore('game', () => {
 
   /**
    * An exercise category's own button: performs a full "set" in one click,
-   * applying that exercise's minimum rep count instead of requiring that
-   * many individual clicks.
+   * applying that exercise's minimum rep count (and its muscle) instead of
+   * requiring that many individual clicks.
    */
   function performSet(id: ExerciseId): boolean {
     const exercise = exercises.value.find((e) => e.id === id)
     if (!exercise) return false
     exercise.reps += exercise.repsPerSet
+    muscle.value += musclePerRep.value * exercise.repsPerSet
     scheduleSave()
     return true
   }
@@ -144,11 +166,14 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     // state
+    muscle,
     totalClicks,
     exercises,
     lastSavedAt,
     // computed
     totalReps,
+    efficiency,
+    musclePerRep,
     // actions
     clickMain,
     performSet,

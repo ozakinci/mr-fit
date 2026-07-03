@@ -26,6 +26,8 @@ export interface Exercise {
  * persisted to (and restored from) save storage.
  */
 export interface GameState {
+  /** Core resource: muscle built from completed reps. Replaces "currency" from v1. */
+  muscle: number
   /** Lifetime count of manual main-button clicks performed by the player. */
   totalClicks: number
   /** All four exercise categories, including their lifetime rep counts. */
