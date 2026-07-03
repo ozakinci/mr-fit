@@ -8,25 +8,25 @@ Next free ticket number: **MRFIT-16**
 
 ---
 
-## Milestone M1 — Core Fitness Loop
+## Milestone M1 — Core Fitness Loop — **COMPLETE**
 
-Replace the old currency/generator loop with the exercise/rep/muscle model. Nothing else in the game makes sense until this lands.
+Replace the old currency/generator loop with the exercise/rep/muscle model. Nothing else in the game makes sense until this lands. Shipped by main-dev as 5 micro-commits (`5cfdfc2`, `b9c4afb`, `1fde211`, `0c8a2ae`, `17bbfdf`); typecheck and build both pass. Test coverage not yet written — blocked on MRFIT-13.
 
 ### MRFIT-1 — Replace currency/generator data model with exercise categories
 Push, Pull, Legs, Core replace the generic generator list. See `project/requirements.md` § Exercises.
-**Status:** Open
+**Status:** Done
 
 ### MRFIT-2 — Main click button logs 1 rep for every exercise at once
-Unblocked. Each click of the main button adds 1 rep to Push, Pull, Legs, and Core simultaneously — no exercise-selection UI or state needed. See `project/requirements.md` § Reps and sets (resolved in v2.1).
-**Status:** Open
+Each click of the main button (`MainRepButton.vue`) adds 1 rep to Push, Pull, Legs, and Core simultaneously — no exercise-selection UI or state.
+**Status:** Done
 
 ### MRFIT-3 — Exercise buttons perform a full set in one click
-Clicking a Push/Pull/Legs/Core button applies that exercise's minimum rep count in one action.
-**Status:** Open
+`ExerciseButton.vue`/`ExercisesList.vue`: clicking an exercise applies its `repsPerSet` minimum in one action.
+**Status:** Done
 
 ### MRFIT-4 — Track a "muscle" stat built from completed reps
-Replaces "currency" as the core resource. Muscle-per-rep is a rate to be modulated by fatigue efficiency (MRFIT-6), not flat.
-**Status:** Open
+Replaces "currency." Both `clickMain()` and `performSet()` route muscle gain through a `musclePerRep` computed, pre-wired for MRFIT-6's fatigue efficiency scaling to plug into without touching action logic.
+**Status:** Done
 
 ---
 
@@ -90,5 +90,6 @@ Added `project/agent-log.md`: every agent reads it at the start of work and appe
 
 Ideas from the pre-pivot backlog that are still plausible but shouldn't be ticketed until their shape under the new fitness theme is clearer:
 
-- **Reset-save action, save export/import, mobile-responsive layout** — theme-agnostic, likely still wanted; re-ticket once M1/M2 land and the new UI's actual shape is known.
-- **Prestige/rebirth, achievements, sound/juice, "more content"** — designed for the old abstract-currency frame. Revisit the *concept*, not just the ticket, once the fitness core loop exists (e.g. "prestige" might become "start a new training program" or something else entirely — that's a design decision for later, not a rename to do now).
+- **Reset-save action, save export/import, mobile-responsive layout** — theme-agnostic, likely still wanted; re-ticket once M1/M2 land and the new UI's actual shape is known. M1 has now landed.
+- **Prestige/rebirth, achievements, sound/juice, "more content"** — designed for the old abstract-currency frame. Revisit the *concept*, not just the ticket, once the fitness core loop exists (e.g. "prestige" might become "start a new training program" or something else entirely — that's a design decision for later, not a rename to do now). M1 has now landed.
+- **Upgrades equivalent** — the old one-time-purchase upgrades system was removed wholesale in M1 (out of v2.1 requirements scope, not a straight port). If the fitness theme wants an equivalent progression mechanic later (equipment unlocks? form/technique upgrades?), that's a fresh design decision, not a resurrection of `Upgrade`/`UpgradeEffect`. Flagged by main-dev, not yet needed.

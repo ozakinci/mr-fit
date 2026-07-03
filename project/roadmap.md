@@ -2,13 +2,13 @@
 
 Milestone sequencing. No dates — this is a hobby/OSS project. Tickets live in [`project/tickets.md`](tickets.md); this file just orders the milestones and gives the one-line "why now." Owned by the project-manager agent.
 
-## M1 — Core Fitness Loop (current)
+## M1 — Core Fitness Loop — **COMPLETE**
 
-The v1 currency/generator loop is being replaced by the exercise/rep/muscle model described in `project/requirements.md`. Nothing else — fatigue, housekeeping, or otherwise — makes sense to build until Push/Pull/Legs/Core and the main click-as-rep mechanic exist. Tickets: MRFIT-1 through MRFIT-4. No longer blocked — all four are ready for main-dev.
+The v1 currency/generator loop has been replaced by the exercise/rep/muscle model described in `project/requirements.md`. Tickets MRFIT-1 through MRFIT-4 all shipped. Typecheck/build pass; test coverage still blocked on MRFIT-13.
 
-## M2 — Fatigue & Rest System
+## M2 — Fatigue & Rest System (current)
 
-Depends on M1. Adds the fatigue meter, efficiency scaling, and the forced-rest/auto-resume cycle. Tickets: MRFIT-5 through MRFIT-8. Expect more requirements to layer onto fatigue later (the user has flagged this explicitly) — build the minimal version described in requirements v2, not a speculative larger system.
+Depends on M1, which is now done — this is next. Adds the fatigue meter, efficiency scaling, and the forced-rest/auto-resume cycle. Tickets: MRFIT-5 through MRFIT-8. Expect more requirements to layer onto fatigue later (the user has flagged this explicitly) — build the minimal version described in requirements v2, not a speculative larger system. Note: main-dev's store already routes muscle gain through a `musclePerRep` computed specifically so MRFIT-6 can plug efficiency scaling in without touching `clickMain()`/`performSet()` — check that before redesigning the flow.
 
 ## M3 — Open-Source Housekeeping
 
