@@ -4,18 +4,18 @@ import { useGameStore } from '../stores/game'
 const store = useGameStore()
 
 function handleClick(): void {
-  store.click()
+  store.clickMain()
 }
 </script>
 
 <template>
-  <button class="clicker-button" type="button" @click="handleClick">
-    Click me!
+  <button class="main-rep-button" type="button" @click="handleClick">
+    Work Out!
   </button>
 </template>
 
 <style scoped>
-.clicker-button {
+.main-rep-button {
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
@@ -29,11 +29,11 @@ function handleClick(): void {
   transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
 }
 
-.clicker-button:hover {
+.main-rep-button:hover {
   background: #4338ca;
 }
 
-.clicker-button:active {
+.main-rep-button:active {
   transform: scale(0.92);
   box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
 }

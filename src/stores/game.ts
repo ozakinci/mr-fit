@@ -102,6 +102,19 @@ export const useGameStore = defineStore('game', () => {
     lastSavedAt.value = Date.now()
   }
 
+  // ---- Actions -------------------------------------------------------------
+  /**
+   * The main click button: logs 1 rep for every exercise category at once.
+   * There is no "selected" exercise — the button is universal.
+   */
+  function clickMain(): void {
+    for (const exercise of exercises.value) {
+      exercise.reps += 1
+    }
+    totalClicks.value += 1
+    scheduleSave()
+  }
+
   // ---- Init / autosave lifecycle ------------------------------------------
   loadFromStorage()
 
@@ -123,6 +136,8 @@ export const useGameStore = defineStore('game', () => {
     lastSavedAt,
     // computed
     totalReps,
+    // actions
+    clickMain,
     // persistence
     saveNow,
   }
