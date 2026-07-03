@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-14**
+Next free ticket number: **MRFIT-15**
 
 ---
 
@@ -74,6 +74,10 @@ main-dev's agent definition now requires unit tests (full coverage) and function
 
 ### MRFIT-12 — Wire up git hooks for the updated agent workflow
 Enforce a ticket ID (`MRFIT-N`) in every commit message (`commit-msg`, blocking). Auto-trigger code-reviewer (opus) and tester (external Playwright coverage, left uncommitted for review) in the background after every commit (`post-commit`, non-blocking), per main-dev/code-reviewer/tester's updated "after each commit" instructions. See `AGENTS.md` for the mechanism, cost implications, and how to disable. Enabled via `git config core.hooksPath .githooks` in this repo, done with explicit sign-off (Claude Code's own permission layer flagged enabling a standing agent-spawning mechanism and required confirmation before proceeding).
+**Status:** Done
+
+### MRFIT-14 — Make project-manager the owner's sole point of contact and orchestrator
+Expanded `.claude/agents/project-manager.md`: the project owner talks only to project-manager, never addresses main-dev/tester/documenter/technical-documenter/code-reviewer directly; project-manager is accountable for chasing tickets to real end-to-end completion (code + tests + docs + review), not just writing them down. Also added a tone/personality directive (blunt, funny, occasional mild cursing, pushes back on vague requests) per the project owner's request. Note: granting project-manager the `Agent` tool itself (needed for it to spawn other subagents autonomously) was blocked by Claude Code's permission layer as a self-authorized capability expansion — still needs explicit sign-off from the project owner, tracked as a follow-up rather than blocking this ticket.
 **Status:** Done
 
 ---
