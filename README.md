@@ -2,9 +2,7 @@
 
 A bodyweight home-workout idle game, built with Vue 3, TypeScript, Vite, and Pinia.
 
-**Status:** the current build is still the original generic idle-clicker prototype (click for currency, buy generators/upgrades). It's mid-pivot to the fitness theme described in [`project/requirements.md`](project/requirements.md) — see [`project/tickets.md`](project/tickets.md) (milestones M1–M2) for what's landed vs. still pending. The loop below describes what's actually running today.
-
-Click to earn currency, buy generators that earn it for you automatically, buy upgrades to boost both — the classic idle-game loop. Progress saves automatically in your browser, including some progress while you're away.
+Click the **Work Out!** button and every exercise — Push, Pull, Legs, and Core — gets a rep. Click an individual exercise's button to knock out a full set of just that one. Every rep builds your **muscle** stat. Progress saves automatically in your browser.
 
 ## Play locally
 
