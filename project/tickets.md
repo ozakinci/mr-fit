@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-16**
+Next free ticket number: **MRFIT-18**
 
 ---
 
@@ -27,6 +27,14 @@ Each click of the main button (`MainRepButton.vue`) adds 1 rep to Push, Pull, Le
 ### MRFIT-4 — Track a "muscle" stat built from completed reps
 Replaces "currency." Both `clickMain()` and `performSet()` route muscle gain through a `musclePerRep` computed, pre-wired for MRFIT-6's fatigue efficiency scaling to plug into without touching action logic.
 **Status:** Done
+
+### MRFIT-16 — Don't persist repsPerSet into saves
+Found by code-reviewer during M1 review. `loadFromStorage()` replaces `exercises` wholesale from the save, including `repsPerSet` — so retuning the seed balancing numbers in `createInitialExercises()` only affects brand-new players, not returning ones, silently. Persist only mutable state (`reps`) and re-derive static config (`name`, `repsPerSet`) from the seed on load.
+**Status:** Open
+
+### MRFIT-17 — Harden save validation for exercise shape
+Found by code-reviewer during M1 review. `isSavedGame` only checks `Array.isArray(v.exercises)`, not that each element has the right shape. A corrupted/tampered save loads successfully and then degrades to `NaN` in `reps`/`muscle`/`totalReps` instead of failing cleanly and falling back to a fresh game. Validate each element has `id`/numeric `reps`/`repsPerSet` before trusting it.
+**Status:** Open
 
 ---
 
