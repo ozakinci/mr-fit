@@ -1,6 +1,6 @@
 # Mr. Fit
 
-A bodyweight home-workout idle game. Vue 3 (Composition API, `<script setup lang="ts">`) + TypeScript + Vite + Pinia. Client-only, no backend — state persists to `localStorage`. Currently mid-pivot from an earlier generic-currency clicker to the fitness theme — see `project/requirements.md` (versioned; check the current version number and Version History before assuming what the game does) and `project/tickets.md` for what's actually landed in code vs. still pending.
+A bodyweight home-workout idle game. Vue 3 (Composition API, `<script setup lang="ts">`) + TypeScript + Vite + Pinia. Client-only, no backend — state persists to `localStorage`. The pivot from an earlier generic-currency clicker landed in Milestone M1: click the main button to rep every exercise (Push/Pull/Legs/Core) at once, click an exercise's own button for a full set, reps build a `muscle` stat. M2 (fatigue/rest) is next, not yet built. See `project/requirements.md` (versioned; check the current version number and Version History) and `project/tickets.md` for what's actually landed vs. still pending.
 
 ## Multi-agent workflow
 
@@ -24,4 +24,4 @@ Stay inside your agent's domain (see that agent's file for specifics) rather tha
 
 ## Not yet decided
 
-No open-source license has been chosen yet (MRFIT-9 in `project/tickets.md`). Don't assume MIT or any other license in generated code headers or docs until that's settled. See `project/requirements.md`'s Open Questions section for other undecided design points (e.g. how the main click button relates to exercise selection).
+No open-source license has been chosen yet (MRFIT-9 in `project/tickets.md`). Don't assume MIT or any other license in generated code headers or docs until that's settled. See `project/requirements.md`'s Open Questions section for other undecided design points (e.g. what "per day" means for the fatigue budget, whether fatigue recovers passively outside forced rest).

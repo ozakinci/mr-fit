@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-18**
+Next free ticket number: **MRFIT-19**
 
 ---
 
@@ -90,6 +90,10 @@ Expanded `.claude/agents/project-manager.md`: the project owner talks only to pr
 
 ### MRFIT-15 — Shared continuity log across all agents
 Added `project/agent-log.md`: every agent reads it at the start of work and appends a short entry after every change (3-day retention, oldest day pruned on append), so work stays coherent across a session restart or token reset. `code-reviewer` can't write it directly (read-only by design) — it appends a `LOG:` line to its report for the invoker to relay instead. `main-dev`/`documenter`/`technical-documenter`/`tester` each got a narrow, explicit exception to write *only* this one file outside their normal domain (`tester` especially, since it otherwise never touches the main repo).
+**Status:** Done
+
+### MRFIT-18 — Audit docs/agent definitions for post-M1 staleness
+`CLAUDE.md` and five of six `.claude/agents/*.md` files still said "mid-pivot" or referenced removed mechanics (currency, generators, upgrades, `UpgradeEffect`, offline progress) as though live, left over from before M1 shipped. Corrected all of them; pointed "what's next" language at M2 instead of the now-resolved pivot. Docs/definitions only, no functional changes.
 **Status:** Done
 
 ---

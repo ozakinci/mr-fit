@@ -15,7 +15,7 @@ Unless told otherwise, review the most recent commit (`git show HEAD`), or the w
 ## What to check
 
 - **Correctness**: logic bugs, off-by-one errors, wrong operator, unhandled edge cases, race conditions in async code, state that can desync (e.g. store mutations that skip the save/offline-progress invariants).
-- **Type safety**: no `any`, no unsound type assertions, exhaustiveness on discriminated unions (`UpgradeEffect` and similar).
+- **Type safety**: no `any`, no unsound type assertions, exhaustiveness on discriminated unions (`ExerciseId` and similar).
 - **Game-balance sanity**: does a numeric change (cost curve, production rate, click power) still make sense, or does it trivialize/break progression?
 - **Security**: this is a client-only game with no backend, but still check for XSS-style issues if any user-supplied text is ever rendered, and that `localStorage` reads are defensively parsed (a corrupted save shouldn't crash the app).
 - **Simplification/reuse**: only flag genuine duplication or unnecessary complexity, not style preferences.
