@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-19**
+Next free ticket number: **MRFIT-20**
 
 ---
 
@@ -94,6 +94,10 @@ Added `project/agent-log.md`: every agent reads it at the start of work and appe
 
 ### MRFIT-18 — Audit docs/agent definitions for post-M1 staleness
 `CLAUDE.md` and five of six `.claude/agents/*.md` files still said "mid-pivot" or referenced removed mechanics (currency, generators, upgrades, `UpgradeEffect`, offline progress) as though live, left over from before M1 shipped. Corrected all of them; pointed "what's next" language at M2 instead of the now-resolved pivot. Docs/definitions only, no functional changes.
+**Status:** Done
+
+### MRFIT-19 — Wire CLAUDE.md into the continuity-log convention; fix remaining staleness
+Prompted by the owner asking about continuing from another computer: `CLAUDE.md` never told the *main* session (as opposed to the six subagents) to read `project/agent-log.md`, so a fresh top-level session had no automatic path to catching up. Added that instruction directly to `CLAUDE.md`. Also found and fixed two more stale bits missed in MRFIT-18: `CLAUDE.md`'s "Not yet decided" section still said no license had been chosen (false since MRFIT-9), and its game-balance guidance still referenced "costs, production rates" from the old generator model instead of the current reps/`musclePerRep`/fatigue-efficiency one.
 **Status:** Done
 
 ---
