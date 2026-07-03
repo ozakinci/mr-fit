@@ -1,0 +1,168 @@
+/* ==========================================================================
+   Global stylesheet: reset, theme palette, typography, layout utilities.
+   Component-specific styling lives elsewhere (scoped component styles).
+   ========================================================================== */
+
+/* --- Reset / box-sizing baseline ---------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+img,
+picture,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* --- Theme palette -------------------------------------------------------
+   Dark, game-like color scheme exposed as custom properties so components
+   can reference them via var(--token-name).
+   -------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --color-bg: #12141c;
+  --color-surface: #1b1f2b;
+  --color-surface-raised: #242a3a;
+  --color-border: #323a4d;
+
+  /* Accent */
+  --color-primary: #7c5cff;
+  --color-primary-hover: #9678ff;
+  --color-primary-muted: #3a2f6b;
+
+  /* Feedback */
+  --color-success: #3ddc97;
+  --color-affordable: #3ddc97;
+  --color-warning: #ffb454;
+  --color-danger: #ff5c5c;
+  --color-disabled: #4a5065;
+
+  /* Text */
+  --color-text: #eef0f7;
+  --color-text-muted: #9aa0b4;
+  --color-text-on-primary: #ffffff;
+
+  /* Typography */
+  --font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: 2.5rem;
+
+  /* Spacing / layout */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --radius: 8px;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+/* --- Base typography / document ------------------------------------------ */
+
+body {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}
+
+#app {
+  min-height: 100svh;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+small {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* --- Layout utilities ----------------------------------------------------- */
+
+/* Centered, max-width content container with consistent side gutters. */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+/* Flex row/column helpers for quick top-level layout composition. */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
