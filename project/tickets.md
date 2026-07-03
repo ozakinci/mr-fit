@@ -16,8 +16,8 @@ Replace the old currency/generator loop with the exercise/rep/muscle model. Noth
 Push, Pull, Legs, Core replace the generic generator list. See `project/requirements.md` § Exercises.
 **Status:** Open
 
-### MRFIT-2 — Main click button logs one rep for the active exercise
-See `project/requirements.md` § Reps and sets. **Blocked on Open Question 1** (how the main button relates to exercise selection) — needs a decision before or during implementation.
+### MRFIT-2 — Main click button logs 1 rep for every exercise at once
+Unblocked. Each click of the main button adds 1 rep to Push, Pull, Legs, and Core simultaneously — no exercise-selection UI or state needed. See `project/requirements.md` § Reps and sets (resolved in v2.1).
 **Status:** Open
 
 ### MRFIT-3 — Exercise buttons perform a full set in one click

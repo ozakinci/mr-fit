@@ -1,6 +1,6 @@
 # Requirements
 
-**Current version: 2** — see [Version History](#version-history) at the end for what changed and why. Past versions are archived verbatim under `project/requirements-history/` and never edited after archiving.
+**Current version: 2.1** — see [Version History](#version-history) at the end for what changed and why. Whole-number bumps (v1 → v2) are full pivots, archived verbatim under `project/requirements-history/`; point bumps (2 → 2.1) are clarifications of open questions within the current pivot and aren't separately archived — the Version History entry is the record.
 
 Owned by the project-manager agent — keep this in sync with what's actually built, not what's aspirational (that belongs in `project/roadmap.md`). Actionable work derived from this document lives in `project/tickets.md`.
 
@@ -16,9 +16,8 @@ The player is out of shape and wants to start working out at home, with no equip
 
 ## Reps and sets
 
-- The **main click button** counts as a rep: each click logs one rep of the currently active/selected exercise.
-- Clicking an **exercise category button** performs a full **set**: one click applies a minimum number of reps for that exercise in one action, rather than requiring that many individual clicks.
-- See [Open Questions](#open-questions) for how the main click button and the exercise buttons relate to each other — this needs a decision before implementation.
+- The **main click button** counts as a rep: each click logs **1 rep for every available exercise simultaneously** — Push, Pull, Legs, and Core all gain a rep from the same click. There is no "selected" or "active" exercise; the main button is universal, not per-category.
+- Clicking an **exercise category button** performs a full **set**: one click applies a minimum number of reps for *that* exercise only, in one action, rather than requiring that many individual clicks.
 
 ## Muscle
 
@@ -46,11 +45,15 @@ The player is out of shape and wants to start working out at home, with no equip
 
 These need a decision (from the project owner or main-dev, as appropriate) before or during implementation — not silently assumed:
 
-1. **How does the main click button relate to the exercise buttons?** Is there a currently-"selected" exercise that the main button logs reps against (so you pick Push, then mash the main button), or does each exercise category have its own implicit "main button," or something else? This materially affects the UI layout main-dev builds.
+1. ~~How does the main click button relate to the exercise buttons?~~ **Resolved 2026-07-03:** the main button is universal — one click grants 1 rep to *all* exercises at once. No selection state. See § Reps and sets.
 2. **What does "per day" mean for the fatigue budget?** A visual framing only for now, or does fatigue actually reset/refill on a real-world day boundary? Deferred until a future requirements batch per the user's note — flagged here so it isn't accidentally built early.
 3. **Does fatigue decrease only during forced rest, or does it also passively recover during normal play (just slower)?** Only "rest until below 20%" is specified so far.
 
 ## Version History
+
+### v2.1 — 2026-07-03 — Resolved: main button applies to all exercises
+
+Answered Open Question 1: the main click button is universal, granting 1 rep to every exercise category per click, not tied to a "selected" exercise. Unblocks MRFIT-2. No prior content superseded — this fills in a gap v2 explicitly left open, not a pivot.
 
 ### v2 — 2026-07-03 — Pivot to home-workout fitness game
 

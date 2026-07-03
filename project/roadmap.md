@@ -4,9 +4,7 @@ Milestone sequencing. No dates — this is a hobby/OSS project. Tickets live in 
 
 ## M1 — Core Fitness Loop (current)
 
-The v1 currency/generator loop is being replaced by the exercise/rep/muscle model described in `project/requirements.md`. Nothing else — fatigue, housekeeping, or otherwise — makes sense to build until Push/Pull/Legs/Core and the main click-as-rep mechanic exist. Tickets: MRFIT-1 through MRFIT-4.
-
-Note: **MRFIT-2 is blocked on an open design question** (how the main click button relates to exercise selection) — see `project/requirements.md` § Open Questions. Resolve before or during M1 implementation.
+The v1 currency/generator loop is being replaced by the exercise/rep/muscle model described in `project/requirements.md`. Nothing else — fatigue, housekeeping, or otherwise — makes sense to build until Push/Pull/Legs/Core and the main click-as-rep mechanic exist. Tickets: MRFIT-1 through MRFIT-4. No longer blocked — all four are ready for main-dev.
 
 ## M2 — Fatigue & Rest System
 
