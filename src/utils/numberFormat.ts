@@ -26,17 +26,26 @@ export function formatNumber(n: number): string {
     return sign + (Number.isInteger(abs) ? abs.toString() : abs.toFixed(2))
   }
 
-  const tier = Math.min(
+  let tier = Math.min(
     Math.floor(Math.log10(abs) / 3),
     SUFFIXES.length - 1,
   )
-  const scaled = abs / Math.pow(1000, tier)
-  const suffix = SUFFIXES[tier]
+  let scaled = abs / Math.pow(1000, tier)
 
   // 2 decimal places below 10, 1 decimal place at 10 and above (matches the
   // "1.23K" / "1.5M" examples), trimming any trailing zeros.
-  const decimals = scaled < 10 ? 2 : 1
-  const formatted = parseFloat(scaled.toFixed(decimals)).toString()
+  let decimals = scaled < 10 ? 2 : 1
+  let formatted = parseFloat(scaled.toFixed(decimals))
 
-  return `${sign}${formatted}${suffix}`
+  // Rounding can push the scaled value up to (or past) 1000 for this tier
+  // (e.g. 999950 rounds to "1000.0" at the K tier) — bump to the next tier
+  // so we never display e.g. "1000K" instead of "1M".
+  if (formatted >= 1000 && tier < SUFFIXES.length - 1) {
+    tier += 1
+    scaled = abs / Math.pow(1000, tier)
+    decimals = scaled < 10 ? 2 : 1
+    formatted = parseFloat(scaled.toFixed(decimals))
+  }
+
+  return `${sign}${formatted.toString()}${SUFFIXES[tier]}`
 }

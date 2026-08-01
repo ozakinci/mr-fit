@@ -2,7 +2,7 @@
 // home-workout loop. Composition-API (setup-function) style store, fully
 // typed against the contracts in src/types/game.ts.
 
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onScopeDispose, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Exercise, ExerciseId, GameState } from '../types/game'
 
@@ -73,14 +73,14 @@ export const useGameStore = defineStore('game', () => {
       muscle: muscle.value,
       totalClicks: totalClicks.value,
       exercises: exercises.value,
-      lastSavedAt: Date.now(),
+      lastSavedAt: lastSavedAt.value,
     }
   }
 
   function saveNow(): void {
     if (typeof localStorage === 'undefined') return
     lastSavedAt.value = Date.now()
-    const snapshot: SavedGame = { ...toSavedGame(), lastSavedAt: lastSavedAt.value }
+    const snapshot: SavedGame = toSavedGame()
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
     } catch {
@@ -159,7 +159,11 @@ export const useGameStore = defineStore('game', () => {
     window.addEventListener('beforeunload', saveNow)
   }
 
-  onUnmounted(() => {
+  // Pinia setup-stores run inside their own effectScope, not a component's
+  // setup(), so onUnmounted would attach to whatever component happens to
+  // call useGameStore() first rather than the store's own lifetime. Use
+  // onScopeDispose, which ties correctly to the store's effectScope.
+  onScopeDispose(() => {
     if (autosaveInterval) clearInterval(autosaveInterval)
     if (typeof window !== 'undefined') window.removeEventListener('beforeunload', saveNow)
   })
