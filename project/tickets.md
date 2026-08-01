@@ -4,7 +4,7 @@ Actionable, independently-shippable work, ticket-numbered (`MRFIT-N`, assigned i
 
 Status values: `Open`, `In Progress`, `Done` (move done tickets to the bottom of their milestone rather than deleting them — the ticket number and its history stay).
 
-Next free ticket number: **MRFIT-20**
+Next free ticket number: **MRFIT-23**
 
 ---
 
@@ -33,8 +33,20 @@ Found by code-reviewer during M1 review. `loadFromStorage()` replaces `exercises
 **Status:** Open
 
 ### MRFIT-17 — Harden save validation for exercise shape
-Found by code-reviewer during M1 review. `isSavedGame` only checks `Array.isArray(v.exercises)`, not that each element has the right shape. A corrupted/tampered save loads successfully and then degrades to `NaN` in `reps`/`muscle`/`totalReps` instead of failing cleanly and falling back to a fresh game. Validate each element has `id`/numeric `reps`/`repsPerSet` before trusting it.
+Found by code-reviewer during M1 review. `isSavedGame` only checks `Array.isArray(v.exercises)`, not that each element has the right shape. A corrupted/tampered save loads successfully and then degrades to `NaN` in `reps`/`muscle`/`totalReps` instead of failing cleanly and falling back to a fresh game. Validate each element has `id`/numeric `reps`/`repsPerSet` before trusting it. Note (found during MRFIT-20/21/22 full-codebase review): blast radius is slightly wider than described — there's no length check either, so `exercises: []` also passes and loads a game with zero exercise rows rendered. Same root cause, not a separate ticket.
 **Status:** Open
+
+### MRFIT-20 — Fix `onUnmounted` misuse in the Pinia game store
+Found by code-reviewer during a full-codebase review (Fable model). `src/stores/game.ts:162-165` calls `onUnmounted` inside the setup-store's `setup()` body to clear `autosaveInterval` and remove the `beforeunload` listener. Pinia's `createSetupStore` runs a store's `setup()` without pushing its own component context, so `onUnmounted` silently attaches to whichever component's `setup()` first triggers `useGameStore()` (currently `MuscleDisplay.vue` by template order) instead of the store's own lifetime. Reproducible today: editing that component in `npm run dev` triggers Vite HMR to unmount/remount it, which fires the cleanup and permanently kills autosave and the unload-flush save for the rest of the dev session with no warning — the store itself never reruns `setup()` since there's no `acceptHMRUpdate` wiring. Latent in production today (nothing conditionally unmounts the triggering component), but a live trap for any future refactor (`v-if`, `Suspense`, routing). Fix: drop the cleanup (a Pinia store lives for the tab's whole session, so a leaked interval/listener is harmless) or swap to `onScopeDispose` from `vue`, which ties to the store's own `effectScope` instead of an arbitrary component instance. Fixed by main-dev: swapped to `onScopeDispose`.
+**Status:** Done
+
+### MRFIT-21 — Fix suffix-tier boundary rounding in number formatting
+Found by code-reviewer during a full-codebase review (Fable model). `src/utils/numberFormat.ts:29-41` picks the K/M/etc. suffix tier from the unrounded magnitude, then rounds the scaled value afterward, so values just under a 1000x threshold overshoot their suffix — e.g. `formatNumber(999999)` and `formatNumber(999950)` both render `"1000K"` instead of `"1M"`. Cosmetic only (no crash, guarded by the existing `Number.isFinite` check), reachable once `muscle`/`totalReps` cross roughly 1e6 during extended play. Fixed by main-dev: tier is re-checked after rounding; verified 999999/999950 both now render "1M".
+**Status:** Done
+
+### MRFIT-22 — Remove redundant double timestamping in save flow
+Found by code-reviewer during a full-codebase review (Fable model). `src/stores/game.ts:80-89` — `saveNow()` sets `lastSavedAt.value = Date.now()`, then calls `toSavedGame()` (which independently calls `Date.now()` again for its own `lastSavedAt` field), then immediately overwrites that with `lastSavedAt.value` in the spread. Harmless in practice (both calls land milliseconds apart) but confusing to read — `toSavedGame()`'s own `Date.now()` call is dead weight since every call site overrides it. Clean up so there's one source of truth for the timestamp. Fixed by main-dev: `toSavedGame()` now takes the timestamp from `lastSavedAt.value` directly instead of calling `Date.now()` internally.
+**Status:** Done
 
 ---
 
