@@ -32,7 +32,7 @@ Ask by name in conversation ("use the main-dev agent to implement X"), `@`-menti
 
 ## The external tester project
 
-`D:\Code\Github\mr-fit-tester` is a sibling folder to this repo (not nested inside it), with its own `package.json` and Playwright suite. It exists so testing happens from a genuinely external vantage point — the way an outside QA process or a curious open-source contributor would poke at the running game, not the way its own author would. See that project's `README.md` for setup.
+`../mr-fit-tester` is a sibling folder to this repo (not nested inside it), with its own `package.json` and Playwright suite. It exists so testing happens from a genuinely external vantage point — the way an outside QA process or a curious open-source contributor would poke at the running game, not the way its own author would. See that project's `README.md` for setup.
 
 ## Commit conventions (enforced)
 
