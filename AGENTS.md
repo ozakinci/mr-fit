@@ -43,7 +43,7 @@ Two git hooks are live in this repo (`git config core.hooksPath .githooks`; the 
 
 main-dev's convention is small, single-functionality commits (`.claude/agents/main-dev.md` § Working with git) — expect many small ticket-tagged commits rather than a few large ones, and budget for the hook cost accordingly.
 
-**Known gap:** `post-commit` currently no-ops on a plain VSCode-extension setup — it shells out to a `claude` CLI binary, and none was found on this machine's PATH (checked Git Bash, PowerShell, npm globals). Install the CLI separately if you want the automated review/test-draft to actually fire; `commit-msg` doesn't need it and works regardless.
+**Machine-dependent:** `post-commit` shells out to a `claude` CLI binary and exits silently when there is none on `PATH`. Check `command -v claude` on the machine you are on — where it exists the hook really fires and costs API usage per commit; `commit-msg` does not need it and works regardless.
 
 ## Independent code review
 
@@ -52,3 +52,23 @@ main-dev's convention is small, single-functionality commits (`.claude/agents/ma
 ## Continuity across sessions
 
 [`project/agent-log.md`](project/agent-log.md) is a shared, append-only log every agent reads at the start of its work and writes to after every change — the mechanism that keeps work coherent across a session restart or a context/token reset, which otherwise wipes the conversation but not this file. Retention is 3 days; whichever agent's entry pushes it past that prunes the oldest day. `code-reviewer` can't write it directly (read-only by design) — it appends a `LOG:` line to its report instead, for whoever invoked it to relay.
+
+## Closing
+
+The `closer` command (`~/.dsh/skills/closer/SKILL.md`) closes this repository like any other project.
+
+- **Repos:** this one (`origin/main`), plus `../mr-fit-tester` **when its tests changed**. The tester
+  project is local-only — it has no remote, so "pushed" there means "committed locally". Say that as
+  a declared gap; never report it as pushed.
+- **Gate:** `npm run build` (`vue-tsc` typecheck, then the Vite build). There is no separate test or
+  lint script; the external Playwright suite lives in `../mr-fit-tester`.
+- **Records:** `project/tickets.md` (what is planned), `project/agent-log.md` (append-only: where the
+  last session stopped), `docs/technical/adr/` (why, when a fork appeared). Do not add a second log.
+- **Nothing flying:** the `post-commit` hook starts `code-reviewer` (opus) and `tester` in the
+  background on every commit when `claude` is on `PATH` — real API usage, and the tester leaves
+  **uncommitted** drafts in `../mr-fit-tester`. Skip both for a doc-only commit with
+  `MRFIT_SKIP_REVIEW_HOOK=1 MRFIT_SKIP_TESTER_HOOK=1`, and check `../mr-fit-tester` is clean, or that
+  its changes are deliberate, before closing.
+- **Commits:** `commit-msg` requires an `MRFIT-N` id that exists in `project/tickets.md`. A doc-only
+  change with no ticket uses `--no-verify` and says `(no-ticket doc fix)` in the subject, as
+  `b57f0cf` did.
